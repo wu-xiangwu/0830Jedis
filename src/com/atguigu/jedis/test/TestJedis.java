@@ -13,32 +13,33 @@ import redis.clients.jedis.JedisSentinelPool;
 
 public class TestJedis {
 	//redis-cli -h xxx -p xxx
-	//±¨´í£ºcan not connect to server
-	//¼ì²é·şÎñ¶ËÅäÖÃÎÄ¼şbind°ó¶¨µÄµØÖ·£¬²»ÄÜ°ó¶¨127.0.0.1
+	//æŠ¥é”™ï¼šcan not connect to server
+	//æ£€æŸ¥æœåŠ¡ç«¯é…ç½®æ–‡ä»¶bindç»‘å®šçš„åœ°å€ï¼Œä¸èƒ½ç»‘å®š127.0.0.1
 	@SuppressWarnings("resource")
 	@Test
 	public void test() {
-		//´´½¨Ò»¸ö¿Í»§¶Ë¶ÔÏó
+		//åˆ›å»ºä¸€ä¸ªå®¢æˆ·ç«¯å¯¹è±¡
 		Jedis jedis = new Jedis("192.168.8.3", 6379, 6000);
 		
-		//Ê¹ÓÃ¿Í»§¶Ë¶ÔÏó£¬·¢ËÍÃüÁî£¬µ÷ÓÃ¶ÔÓ¦µÄ·½·¨
+		//ä½¿ç”¨å®¢æˆ·ç«¯å¯¹è±¡ï¼Œå‘é€å‘½ä»¤ï¼Œè°ƒç”¨å¯¹åº”çš„æ–¹æ³•
 		String pong = jedis.ping();
 		
 		System.out.println(pong);
 		
-		//Ê¹ÓÃÍêºó¼°Ê±¹Ø±Õjedis
+		//ä½¿ç”¨å®ŒååŠæ—¶å…³é—­jedis
 		jedis.close();
 	}
 	@Test
 	public void testSentinel() throws Exception {
 		Set<String> set = new HashSet<>();
-		// setÖĞ·ÅµÄÊÇÉÚ±øµÄIpºÍ¶Ë¿Ú
+		// setä¸­æ”¾çš„æ˜¯å“¨å…µçš„Ipå’Œç«¯å£
 		set.add("192.168.8.3:26379");
 		GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
 		JedisSentinelPool jedisSentinelPool = new JedisSentinelPool("mymaster", set, poolConfig, 60000);
 		Jedis jedis = jedisSentinelPool.getResource();
 		String value = jedis.get("k3");
 		jedis.set("Jedis", "Jedis1");
+		System.out.println(value);
 		System.out.println(value);
 	}
 
